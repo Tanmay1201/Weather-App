@@ -1,0 +1,28 @@
+.Card {
+  border: 1px solid white;
+  width: auto;
+  height: auto;
+  cursor: pointer;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.Typo1 {
+  color: #000000;
+  font-size: 8px;
+
+  margin-right: 1%;
+}
+
+.Typo2 {
+  color: #000000;
+  font-size: 8px;
+  margin-right: 1%;
+  justify-content: space-between;
+}
+
+.Typo3 {
+  color: #000000;
+
+  padding-right: 5%;
+  font-size: 8px;
+}
