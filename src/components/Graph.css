@@ -1,0 +1,78 @@
+.ReportCard {
+  border: 1px solid white;
+  width: auto;
+  height: auto;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  cursor: pointer;
+  margin-top: 5%;
+  margin-left: 20%;
+  margin-right: 20%;
+  margin-bottom: 20%;
+}
+
+.Header {
+  display: flex;
+  justify-content: flex-start;
+  padding: 2%;
+}
+img {
+  height: 70px;
+  width: 100px;
+}
+.Header > span {
+  font-size: 5vw;
+  font-family: "Times New Roman", Times, serif;
+  color: black;
+}
+
+.pressurehumidity {
+  display: flex;
+  padding-top: 5%;
+  justify-content: space-evenly;
+}
+
+.sunrisesunset {
+  display: flex;
+  padding: 2%;
+  justify-content: space-between;
+}
+.pressure,
+.humidity {
+  padding: 5%;
+  background-color: #e6ffff;
+}
+.pressure,
+.humidity > span {
+  font-size: 25px;
+}
+.sunrise,
+.sunset > span {
+  font-size: 25px;
+}
+@media screen and (max-width: 600px) {
+  .Header > span {
+    font-size: 30px;
+  }
+  .ReportCard {
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 3%;
+  }
+  img {
+    height: 40px;
+    width: 50px;
+  }
+  .pressurehumidity {
+    display: flex;
+    padding-top: 5%;
+    justify-content: space-evenly;
+  }
+  .pressure,
+  .humidity > span {
+    font-size: 13px;
+  }
+  .sunrise,
+  .sunset > span {
+    font-size: 13px;
+  }
+}
