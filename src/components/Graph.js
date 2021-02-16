@@ -3,18 +3,14 @@ import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { connect } from "react-redux";
-import { extractData } from "../reducers/fetch_weather_details"
-import {
-  Chart,
-  ArgumentAxis,
-  ValueAxis,
-  LineSeries,
-  Title,
-  Legend,
-} from '@devexpress/dx-react-chart-material-ui';
+import Box from '@material-ui/core/Box';
+import { getPressureAndHumidity } from "../reducers/fetch_weather_details"
+import CanvasJSReact from "../canvasjs.react"
+import { extraTemperatureData, getSunriseSunset} from "../reducers/fetch_weather_details"
 import "./Graph.css"
 
-const format = () => tick => tick;
+var CanvasJS = CanvasJSReact.CanvasJS;
+var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 class Graph extends Component {
 
@@ -22,48 +18,71 @@ class Graph extends Component {
         super(props)
 
         this.state = {
-            sampleData: [
-                {
-                    day:1,
-                    temp:12
-                },
-                {
-                    day:2,
-                    temp:13
-                },
-                {
-                    day:3,
-                    temp:19
-                },
-                {
-                    day:4,
-                    temp:24
-                }
-            ]
         }
     }
 
     render() {
-        console.log(this.props.isComponentSelected.isSelected)
+        console.log(this.state.sampleData)
+        console.log(this.props)
+        console.log('Above is state of extract temp')
+
+        const options = {
+
+            animationEnabled: true,
+			data: [{
+                type: "spline",
+				dataPoints: this.props.TemperatureData
+		    }]
+        }
+        var  options1 = null
+        if (this.props.sunrise_sunset !== null) {
+            options1 = {
+                animationEnabled: true,
+                data: [{
+                    type: "stackedArea100",
+                    dataPoints: [
+                        { x: 2, y: 5 },
+                        {x : 18, y: 9}
+                    ]
+                }]
+            }
+        }
         if (this.props.isComponentSelected.isSelected) {
             return (
             <Card className="ReportCard">
                     <CardContent>
-                            <Typography className="Header">
+                            <div className="Header">
                             <span><b>{this.props.isComponentSelected.max_temp}&#176;C</b></span>
-                            <img  width="60px" height="80px" src={`http://openweathermap.org/img/w/${this.props.isComponentSelected.icon}.png`}></img>
-                        </Typography>
+                            <img  src={`http://openweathermap.org/img/w/${this.props.isComponentSelected.icon}.png`}></img>
+                        </div>
                         
-                        <Chart data={this.state.sampleData}>
-                            {/* <ArgumentAxis tickFormat={format} /> */}
-                            <LineSeries
-                                name="TV news"
-                                valueField="temp"
-                                argumentField="day"
-                            />
-                        </Chart>
+                        <CanvasJSChart options = {options} />
                     </CardContent>
-                    
+                    <CardContent>
+                        <Box className="pressurehumidity">
+                            <Box className="pressure">
+                                <span><b>Pressure</b></span><br />
+                                <span id="prehum">{this.props.pressure_humidity.pressure} hpa </span>
+                            </Box>
+                            <Box className="humidity">
+                                <span><b>Humidity</b></span><br />
+                                <span id="prehum">{this.props.pressure_humidity.humidity} %</span>
+                            </Box>
+                        </Box>
+                    </CardContent>
+                    <CardContent>
+                        <Box className="sunrisesunset">
+                            <Box className="sunrise">
+                                <span><b>Sunrise</b></span><br />
+                                <span id="temp">{ this.props.sunrise_sunset.x} AM</span>
+                            </Box>
+                            <Box className="sunset">
+                                <span><b>Sunset</b></span><br></br>
+                                <span id="temp">{ this.props.sunrise_sunset.y} PM</span>
+                            </Box>
+                        </Box>
+                    </CardContent>
+
             </Card>
         )   
         }
@@ -74,8 +93,10 @@ class Graph extends Component {
 function mapStateToProps(state) {
     console.log("state search box graph", state)
     return {
-        extractedD: extractData(state),
-        isComponentSelected: state.ComponentClickedReducer.selected
+        sunrise_sunset: getSunriseSunset(state),
+        pressure_humidity: getPressureAndHumidity(state),
+        isComponentSelected: state.ComponentClickedReducer.selected,
+        TemperatureData: extraTemperatureData(state)
     }   
 }
 

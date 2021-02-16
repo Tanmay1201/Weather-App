@@ -7,8 +7,19 @@
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   font-size: 15;
   color: #000000;
+  outline: none;
 }
 .displayCard {
   display: flex;
   justify-content: center;
+}
+
+@media screen and (max-width: 700px) {
+  .displayCard {
+    display: flex;
+    justify-content: left;
+    overflow-x: scroll;
+    margin-left: 2%;
+    margin-right: 2%;
+  }
 }

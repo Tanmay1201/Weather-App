@@ -8,6 +8,7 @@ const fetchAPIResponse = city => {
         var url = `http://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${appid}`
         axios.get(url)
             .then(response => {
+                console.log(response.data)
                 console.log(response.data.city)
                 console.log(response.data.list)
                 console.log('thisisresponse')

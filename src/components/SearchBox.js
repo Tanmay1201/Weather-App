@@ -13,24 +13,45 @@ import IndividualCard from "../components/IndividualCard"
 import Box from '@material-ui/core/Box'
 import axios from "axios";
 
+
 class SearchBox extends Component {
     
     constructor(props) {
         super(props) 
 
         this.state = {
-            cityName: ''
+            cityName: '',
+            activeIndex: -1,
+            options: {
+                method: 'GET',
+                url: 'https://wft-geo-db.p.rapidapi.com/v1/geo/cities',
+                headers: {
+                    'x-rapidapi-key': '8343f067ddmsh1fe06553ae0b10dp1c2f0ajsnf4c924334d59',
+                    'x-rapidapi-host': 'wft-geo-db.p.rapidapi.com'
+                }
+            }
         }
     }
+       
     
     changeCityName = event => {
+         axios.request(this.state.options).then(function (response) {
+            console.log(response.data);
+            }).catch(function (error) {
+                console.error(error);
+        });
         this.setState({ cityName: event.target.value })
     }
 
     fetchCityData = event => {
         this.props.FetchAPIResponse(this.state.cityName)
+        
     }
-
+    getData = event => {
+        if (event.charCode == 13) {
+            this.props.FetchAPIResponse(this.state.cityName)
+        }
+    }
     componentDidMount()  {
         navigator.geolocation.getCurrentPosition(function(position) {
             console.log("Latitude is :", position.coords.latitude);
@@ -45,6 +66,7 @@ class SearchBox extends Component {
         });
     }
     
+
     render() {
         return (
             <Box>
@@ -55,6 +77,7 @@ class SearchBox extends Component {
                         type="search"
                         variant="outlined"
                         value={this.state.cityName}
+                        onKeyPress={this.getData}
                         onChange={this.changeCityName}
                         fullWidth
                         InputProps={{
@@ -80,9 +103,10 @@ class SearchBox extends Component {
 
                     {
                         this.props.extractedD &&   
-                        this.props.extractedD.map((data, index) => (
-                            <IndividualCard data={data} key={index} />
-                        ))
+                            this.props.extractedD.map((data, index) => (
+                                <IndividualCard data={data} key={index} index={index}/>
+                                
+                            ))
                     }
                 </div> 
                 </Box>
